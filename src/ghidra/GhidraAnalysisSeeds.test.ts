@@ -235,6 +235,9 @@ describe("Ghidra seed profile", () => {
       format: "rea-ghidra-seeds-v1",
       entries: { function: 2, code: 1, label: 1 },
     });
+    expect(resolved.value.profile?.parameters.seeded_function_body_policy).toBe(
+      "decode-refit-entry-only-v1",
+    );
   });
 
   it("refuses a malformed seed file before launching Ghidra", async () => {

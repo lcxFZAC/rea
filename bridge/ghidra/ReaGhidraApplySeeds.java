@@ -1,4 +1,5 @@
 import ghidra.app.script.GhidraScript;
+import ghidra.app.cmd.function.CreateFunctionCmd;
 import ghidra.program.model.address.Address;
 import ghidra.program.model.address.AddressSpace;
 import ghidra.program.model.listing.Function;
@@ -92,6 +93,22 @@ public final class ReaGhidraApplySeeds extends GhidraScript {
                     case "function" -> {
                         Function existing = getFunctionAt(seed.address());
                         if (existing != null) {
+                            // PE loaders can create an entry-only function before any
+                            // instructions have been decoded. A name alone must not
+                            // make that placeholder count as an analyzed function.
+                            // Preserve established bodies; refit only entry-only seeds
+                            // from decoded flow within this ephemeral import.
+                            if (existing.getBody().getNumAddresses() == 1) {
+                                if (!decoded(seed.address())) {
+                                    functionFailed++;
+                                    if (logged++ < 20) println("REA seed failed: entry-only function " + seed.address());
+                                    continue;
+                                }
+                                var body = CreateFunctionCmd.getFunctionBody(currentProgram, seed.address(), monitor);
+                                // setBody rejects overlaps instead of shrinking another
+                                // function to accommodate this caller-declared seed.
+                                existing.setBody(body);
+                            }
                             functionExisting++;
                             if (seed.name() != null) {
                                 existing.setName(seed.name(), SourceType.USER_DEFINED);

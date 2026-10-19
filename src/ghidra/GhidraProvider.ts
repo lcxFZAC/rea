@@ -463,7 +463,10 @@ export class GhidraProvider implements AnalysisProviderCandidate {
           : { analysis_extensions: jsonValueSchema.parse(extensions.value) }),
         ...(seeds.value === undefined
           ? {}
-          : { analysis_seeds: jsonValueSchema.parse(seeds.value) }),
+          : {
+              analysis_seeds: jsonValueSchema.parse(seeds.value),
+              seeded_function_body_policy: "decode-refit-entry-only-v1",
+            }),
       }),
     });
   }
