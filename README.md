@@ -68,6 +68,10 @@ Setup registers REA with your agent and installs matching workflow instructions.
 
 ## Quick start
 
+Working from a Git checkout (including Windows)? Follow the
+[source checkout guide](docs/source-checkout.md) before launching REA. It covers
+the required Windows addon, build, and real CLI/MCP verification.
+
 On Linux, Ghidra, JADX, firmware tool launches and static JavaScript/Electron
 analysis require a procps-compatible `ps` on REA's `PATH` for process ownership
 checks. Recovery steps are in `docs/installation.md` under

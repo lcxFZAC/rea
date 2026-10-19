@@ -124,12 +124,17 @@ describe("executable dispatcher", () => {
         expect(result).toMatchObject({
           exitCode: 1,
           stderr: expect.stringContaining(
-            "REA's compiled runtime is missing. Run `npm ci && npm run build:cached` in",
+            "REA's compiled runtime is missing. Run `npm ci` in",
           ),
         });
         expect(result.stderr).toContain(
           "If this is an installed package, reinstall rea-agents.",
         );
+        expect(result.stderr).toContain(
+          "restore the matching Windows native addon first",
+        );
+        expect(result.stderr).toContain("docs/source-checkout.md");
+        expect(result.stderr).toContain("npm run verify:source-runtime");
         expect(result).toMatchObject({
           stderr: expect.not.stringContaining("ERR_MODULE_NOT_FOUND"),
         });

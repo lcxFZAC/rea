@@ -68,6 +68,8 @@ Use [.nvmrc](.nvmrc) and `package.json#packageManager` for the pinned toolchain.
 - `npm run check:fast`: cached typecheck/lint and the pre-push check.
 - `npm run docs:check`: validate generated documentation.
 
+For source checkout startup, follow [docs/source-checkout.md](docs/source-checkout.md). On Windows, restore or build the matching native addon before the supervised build. Before claiming the checkout is runnable, build it and run `npm run verify:source-runtime` plus `node scripts/rea.mjs mcp doctor --json`; report native-provider verification separately. Changes to startup/build paths must keep the source-runtime CI lane passing on `develop`.
+
 Use relevant checks for the change. The complete local gate, `npm run check:pr`, is optional for broad changes or CI diagnosis. See [CONTRIBUTING.md](CONTRIBUTING.md) for development, generated-file ownership, and release conventions.
 
 `docs/public/product-catalog.json`, `docs/verification/managed-conformance-*.json`, and `skills/` are ignored outputs. Edit source contracts and `.agents/skills/reverse-engineer-anything/`, then regenerate as needed. `.cache/mcp-tool-catalog.json` is test metadata; runtime builds and source checking do not consume it. Never commit binaries, provider project documents, credentials, `dist/`, `node_modules/`, or local planning artifacts.
